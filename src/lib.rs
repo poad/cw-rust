@@ -8,8 +8,10 @@ fn log_request(req: &Request) {
         "{} - [{}], located at: {:?}, within: {}",
         Date::now().to_string(),
         req.path(),
-        req.cf().coordinates().unwrap_or_default(),
-        req.cf().region().unwrap_or("unknown region".into())
+        req.cf().map(|cf| cf.coordinates()),
+        req.cf().map_or("unknown region".to_string(), |cf| cf
+            .region()
+            .unwrap_or("unknown region".to_string()))
     );
 }
 
