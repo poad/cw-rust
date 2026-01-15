@@ -1,5 +1,7 @@
 name = "cw-rust"
 type = "javascript"
+main = "build/worker/shim.mjs"
+
 workers_dev = true
 compatibility_date = "2022-07-26"
 

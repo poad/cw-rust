@@ -3,3 +3,4 @@
 wasm-pack.log
 build/
 .DS_Store
+node_modules
