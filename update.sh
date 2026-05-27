@@ -13,19 +13,9 @@ if [ $result -ne 0 ]; then
   exit $result
 fi
 
-cd "${CURRENT}" || exit
-result=$?
-if [ $result -ne 0 ]; then
+if ! (disable-checkout-persist-credentials); then
   cd "${CUR}" || exit
-  exit $result
-fi
-echo ""
-pwd
-cargo update
-result=$?
-if [ $result -ne 0 ]; then
-  cd "${CUR}" || exit
-  exit $result
+  exit 1
 fi
 
 cd "${CURRENT}" || exit
@@ -34,11 +24,24 @@ if [ $result -ne 0 ]; then
   cd "${CUR}" || exit
   exit $result
 fi
-git commit -am "Bumps crates" && git push
+echo ""
+pwd
+
+if ! (cargo update); then
+  cd "${CUR}" || exit
+  exit 1
+fi
+
+cd "${CURRENT}" || exit
 result=$?
 if [ $result -ne 0 ]; then
   cd "${CUR}" || exit
   exit $result
+fi
+
+if ! (git commit -am "Bumps crates" && git push); then
+  cd "${CUR}" || exit
+  exit 1
 fi
 
 cd "${CUR}" || exit
