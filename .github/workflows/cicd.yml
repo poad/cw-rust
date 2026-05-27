@@ -19,7 +19,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Enable auto-merge for Dependabot Dependabot Pull Request
+    - name: Enable auto-merge for Pull Request
+      if: ${{ github.event_name == 'pull_request' && !github.event.pull_request.draft }}
       run: |
         gh pr review --approve "$PR_URL"
         gh pr merge --auto --squash "$PR_URL"
